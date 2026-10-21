@@ -3,11 +3,13 @@ from sqlalchemy import func, select
 from models import Book, Author,engine,SessionLocal
 from sqlalchemy.orm import Session
 from routes.book import books_bp
+from  routes.authors import authors_bp
 app = Flask(__name__)
 
 app.secret_key = "your_super_secret_key_here"
 
 app.register_blueprint(books_bp, url_prefix="/books")
+app.register_blueprint(authors_bp, url_prefix="/authors")
 
 @app.errorhandler(404)
 def page_not_found(error):

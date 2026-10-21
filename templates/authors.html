@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#fff1c8">
+    <title>Authors — Papertrail</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a>
+        <nav class="topnav" aria-label="Main navigation">
+            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+            <a class="nav-link" href="{{ url_for('books.books') }}">My library</a>
+            <a class="nav-link active" href="{{ url_for('authors.authors') }}">Authors</a>
+        </nav>
+        <a class="button button-small button-quiet" href="{{ url_for('books.books') }}">← Back to library</a>
+    </header>
+
+    <main class="library-shell">
+        <section class="page-heading">
+            <div>
+                <p class="eyebrow"><span class="eyebrow-line"></span> THE PEOPLE BEHIND THE PAGES</p>
+                <h1>Our <em>authors.</em></h1>
+                <p class="page-description">Meet the writers on your shelf and the places they call home.</p>
+            </div>
+            <div class="collection-badge"><span class="badge-icon" aria-hidden="true">✎</span><span><strong>{{ authors|length }}</strong><small>authors collected</small></span></div>
+        </section>
+
+        <section class="panel collection-panel">
+            <div class="panel-heading collection-heading">
+                <div><p class="section-kicker">THE STORYTELLERS</p><h2>Author directory</h2></div>
+                <span class="collection-count">{{ authors|length }} <span>AUTHORS</span></span>
+            </div>
+
+            {% if authors %}
+            <div class="book-list">
+                {% for author in authors %}
+                <article class="book-row">
+                    <div class="mini-cover cover-{{ loop.index0 % 4 }}" aria-hidden="true"><span>{{ author.name[:1]|upper }}</span></div>
+                    <div class="book-details">
+                        <h3>{{ author.name }}</h3>
+                        <p>Author</p>
+                        <span class="country-tag">{{ author.country }}</span>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state"><span class="empty-icon" aria-hidden="true">✎</span><h3>No authors yet.</h3><p>Add a book with an author and they’ll appear here.</p></div>
+            {% endif %}
+
+            <div class="collection-footer"><span>EVERY STORY STARTS SOMEWHERE</span><span class="footer-rule"></span><span aria-hidden="true">✳</span></div>
+        </section>
+    </main>
+    <footer class="site-footer"><a class="brand footer-brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a><span>COLLECT THE STORIES THAT STAY WITH YOU.</span></footer>
+</body>
+</html>

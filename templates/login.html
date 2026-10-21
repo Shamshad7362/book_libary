@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#fff1c8">
+    <title>Sign in — Papertrail</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="login-page">
+    <header class="topbar login-topbar">
+        <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a>
+        <a class="login-back-link" href="{{ url_for('home') }}">← Back to home</a>
+    </header>
+
+    <main class="login-layout">
+        <section class="login-welcome" aria-label="Welcome to Papertrail">
+            <span class="login-decoration decoration-circle-one"></span>
+            <span class="login-decoration decoration-circle-two"></span>
+            <span class="login-spark">✳</span>
+            <p class="eyebrow"><span class="eyebrow-line"></span> YOUR PERSONAL LIBRARY</p>
+            <h1>Every story<br>has a <em>place.</em></h1>
+            <p class="login-welcome-copy">A quiet corner for the books you love and the stories you want to keep.</p>
+            <div class="login-book-stack" aria-hidden="true"><span class="login-book book-teal"></span><span class="login-book book-aqua"></span><span class="login-book book-coral"></span></div>
+            <span class="login-side-note">READ · REMEMBER · REPEAT</span>
+        </section>
+
+        <section class="panel login-card">
+            <div class="login-card-heading">
+                <span class="login-card-icon" aria-hidden="true">↗</span>
+                <p class="section-kicker">WELCOME BACK</p>
+                <h2>Sign in</h2>
+                <p>Pick up right where your next chapter begins.</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                <ul class="login-flashes" aria-live="polite">
+                    {% for category, message in messages %}
+                    <li class="login-flash {{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            {% endwith %}
+
+            <form class="login-form" method="POST" action="/login">
+                <label for="username">Username</label>
+                <input id="username" type="text" name="username" placeholder="Enter your username" autocomplete="username" required>
+
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
+
+                <button class="button login-submit" type="submit">Sign in <span aria-hidden="true">→</span></button>
+            </form>
+            <p class="login-footnote"><span>✳</span> Your bookshelf is waiting for you.</p>
+        </section>
+    </main>
+    <footer class="login-footer"><span>papertrail</span><span>MADE FOR THE STORIES THAT STAY.</span></footer>
+</body>
+</html>

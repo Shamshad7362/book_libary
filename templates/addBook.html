@@ -1,102 +1,114 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My library — Papertrail</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <header class="topbar">
-        <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a>
-        <nav class="topnav" aria-label="Main navigation"><a class="nav-link" href="{{ url_for('home') }}">Home</a><a class="nav-link active" href="{{ url_for('books.books') }}">My library</a></nav>
-        <span class="topbar-note">A HOME FOR YOUR STORIES</span>
-    </header>
+{% extends "base.html" %}
 
-    <main class="library-shell">
-        <section class="page-heading">
-            <div><p class="eyebrow"><span class="eyebrow-line"></span> YOUR PERSONAL COLLECTION</p><h1>My <em>library.</em></h1><p class="page-description">Every book has a place here. Add a new favorite or revisit the stories already on your shelf.</p></div>
-            <div class="collection-badge"><span class="badge-icon">▤</span><span><strong>{{ books|length }}</strong><small>books collected</small></span></div>
+{% block title %}My library — Papertrail{% endblock %}
+
+{% block content %}
+<header class="topbar">
+    <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a>
+    <nav class="topnav" aria-label="Main navigation">
+        <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+        <a class="nav-link active" href="{{ url_for('books.books') }}">My library</a>
+        <a class="nav-link" href="{{ url_for('authors.authors') }}">Authors</a>
+    </nav>
+    <span class="topbar-note">A HOME FOR YOUR STORIES</span>
+</header>
+
+<main class="library-shell">
+    <section class="page-heading">
+        <div>
+            <p class="eyebrow"><span class="eyebrow-line"></span> YOUR PERSONAL COLLECTION</p>
+            <h1>My <em>library.</em></h1>
+            <p class="page-description">Every book has a place here. Add a new favorite or revisit the stories already on your shelf.</p>
+        </div>
+        <div class="collection-badge"><span class="badge-icon" aria-hidden="true">▤</span><span><strong>{{ books|length }}</strong><small>books collected</small></span></div>
+    </section>
+
+    <div class="library-grid">
+        <section class="panel add-panel">
+            <div class="panel-heading"><div><p class="section-kicker">GROW YOUR SHELF</p><h2>Add a book</h2></div><span class="panel-icon" aria-hidden="true">＋</span></div>
+            <form class="book-form" method="POST" action="{{ url_for('books.books') }}">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    <div class="flash-messages" aria-live="polite">
+                        {% for category, message in messages %}
+                        <p class="flash {{ category }}">{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                {% endwith %}
+
+                <label for="name">Book title</label>
+                <input id="name" type="text" name="name" placeholder="e.g. The Midnight Library" maxlength="100" required autocomplete="off">
+                <label for="author-search">Author</label>
+                <input id="author-search" type="search" placeholder="Search authors by name" autocomplete="off" aria-controls="author-results" aria-expanded="false" required>
+                <input id="author-id" type="hidden" name="author_id" value="">
+                <div id="author-results" class="author-results" role="listbox" aria-label="Author suggestions" hidden>
+                    {% for author in authors %}
+                    <button class="author-result" type="button" role="option" data-author-id="{{ author.id }}" data-author-name="{{ author.name }}">{{ author.name }} <span>{{ author.country }}</span></button>
+                    {% endfor %}
+                    <p class="author-no-results" hidden>No matching authors found.</p>
+                </div>
+                <button id="show-new-author" class="new-author-toggle" type="button">＋ Add a new author</button>
+                <div id="new-author-fields" hidden>
+                    <label for="author-name">New author's name</label>
+                    <input id="author-name" type="text" name="author_name" placeholder="Who wrote it?" maxlength="100">
+                    <p id="duplicate-author-warning" class="duplicate-author-warning" role="status" hidden></p>
+                    <label for="country">Author's country</label>
+                    <input id="country" type="text" name="country" placeholder="e.g. United Kingdom" maxlength="100">
+                </div>
+                <button class="button form-button" type="submit">Add to my library <span aria-hidden="true">→</span></button>
+                <p class="form-hint"><span>✳</span> A good book is always worth remembering.</p>
+            </form>
         </section>
 
-        <div class="library-grid">
-            <section class="panel add-panel">
-                <div class="panel-heading"><div><p class="section-kicker">GROW YOUR SHELF</p><h2>Add a book</h2></div><span class="panel-icon">＋</span></div>
-                <form class="book-form" method="POST" action="{{ url_for('books.books') }}">
-
-                        {% with messages = get_flashed_messages(with_categories=true) %}
-                          {% if messages %}
-                            <div class="flash-messages">
-                              {% for category, message in messages %}
-                                <p class="flash {{ category }}">{{ message }}</p>
-                              {% endfor %}
-                            </div>
-                          {% endif %}
-                        {% endwith %}
-
-                    <label for="name">Book title</label>
-                    <input id="name" type="text" name="name" placeholder="e.g. The Midnight Library" maxlength="100" required autocomplete="off">
-                    <label for="author-search">Author</label>
-                    <input id="author-search" type="search" placeholder="Search authors by name" autocomplete="off" aria-controls="author-results" aria-expanded="false" required>
-                    <input id="author-id" type="hidden" name="author_id" value="">
-                    <div id="author-results" class="author-results" role="listbox" aria-label="Author suggestions" hidden>
-                        {% for author in authors %}
-                        <button class="author-result" type="button" role="option" data-author-id="{{ author.id }}" data-author-name="{{ author.name }}">{{ author.name }} <span>{{ author.country }}</span></button>
-                        {% endfor %}
-                        <p class="author-no-results" hidden>No matching authors found.</p>
+        <section class="panel collection-panel">
+            <div class="panel-heading collection-heading">
+                <div><p class="section-kicker">THE STORIES YOU KEEP</p><h2>Your collection</h2></div>
+                <span class="collection-count">{{ books|length }} <span>ITEMS</span></span>
+            </div>
+            {% if books %}
+            <div class="book-search-wrap">
+                <label class="visually-hidden" for="book-search">Search your books</label>
+                <input id="book-search" class="book-search" type="search" placeholder="Search by title, author, or country" autocomplete="off">
+                <span class="search-icon" aria-hidden="true">⌕</span>
+            </div>
+            <div class="book-list">
+                {% for book in books %}
+                <article class="book-row">
+                    <div class="mini-cover cover-{{ loop.index0 % 4 }}" aria-hidden="true"><span>{{ book.name[:1]|upper }}</span></div>
+                    <div class="book-details"><h3>{{ book.name }}</h3><p>by {{ book.author.name }}</p><span class="country-tag">{{ book.author.country }}</span></div>
+                    <div class="book-actions">
+                        <a class="icon-action edit-action" href="{{ url_for('books.edit_book', book_id=book.id) }}" aria-label="Edit {{ book.name }}" title="Edit book">✎</a>
+                        <form class="delete-form" method="POST" action="{{ url_for('books.delete_book', book_id=book.id) }}" data-book-title="{{ book.name }}">
+                            <button class="icon-action delete-action" type="submit" aria-label="Delete {{ book.name }}" title="Delete book">×</button>
+                        </form>
                     </div>
-                    <button id="show-new-author" class="new-author-toggle" type="button">＋ Add a new author</button>
-                    <div id="new-author-fields" hidden>
-                        <label for="author-name">New author's name</label>
-                        <input id="author-name" type="text" name="author_name" placeholder="Who wrote it?" maxlength="100">
-                        <p id="duplicate-author-warning" class="duplicate-author-warning" role="status" hidden></p>
-                        <label for="country">Author's country</label>
-                        <input id="country" type="text" name="country" placeholder="e.g. United Kingdom" maxlength="100">
-                    </div>
-                    <button class="button form-button" type="submit">Add to my library <span aria-hidden="true">→</span></button>
-                    <p class="form-hint"><span>✳</span> A good book is always worth remembering.</p>
-                </form>
-            </section>
+                </article>
+                {% endfor %}
+            </div>
+            <div id="book-search-empty" class="book-search-empty" hidden>No books match your search.</div>
+            {% else %}
+            <div class="empty-state"><span class="empty-icon" aria-hidden="true">⌕</span><h3>Your shelf is waiting.</h3><p>Add the first book you want to keep close.</p></div>
+            {% endif %}
+            <div class="collection-footer"><span>KEEP TURNING PAGES</span><span class="footer-rule"></span><span aria-hidden="true">✳</span></div>
+        </section>
+    </div>
+</main>
 
-            <section class="panel collection-panel">
-                <div class="panel-heading collection-heading"><div><p class="section-kicker">THE STORIES YOU KEEP</p><h2>Your collection</h2></div><span class="collection-count">{{ books|length }} <span>ITEMS</span></span></div>
-                {% if books %}
-                <div class="book-search-wrap">
-                    <label class="visually-hidden" for="book-search">Search your books</label>
-                    <input id="book-search" class="book-search" type="search" placeholder="Search by title, author, or country" autocomplete="off">
-                    <span class="search-icon" aria-hidden="true">⌕</span>
-                </div>
-                <div class="book-list">
-                    {% for book in books %}
-                    <article class="book-row">
-                        <div class="mini-cover cover-{{ loop.index0 % 4 }}"><span>{{ book.name[:1]|upper }}</span></div>
-                        <div class="book-details"><h3>{{ book.name }}</h3><p>by {{ book.author.name }}</p><span class="country-tag">{{ book.author.country }}</span></div>
-                        <div class="book-actions"><a class="icon-action edit-action" href="{{ url_for('books.edit_book', book_id=book.id) }}" aria-label="Edit {{ book.name }}" title="Edit book">✎</a><form class="delete-form" method="POST" action="{{ url_for('books.delete_book', book_id=book.id) }}" data-book-title="{{ book.name }}"><button class="icon-action delete-action" type="submit" aria-label="Delete {{ book.name }}" title="Delete book">×</button></form></div>
-                    </article>
-                    {% endfor %}
-                </div>
-                <div id="book-search-empty" class="book-search-empty" hidden>No books match your search.</div>
-                {% else %}
-                <div class="empty-state"><span class="empty-icon">⌕</span><h3>Your shelf is waiting.</h3><p>Add the first book you want to keep close.</p></div>
-                {% endif %}
-                <div class="collection-footer"><span>KEEP TURNING PAGES</span><span class="footer-rule"></span><span>✳</span></div>
-            </section>
-        </div>
-    </main>
-    <footer class="site-footer"><a class="brand footer-brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a><span>COLLECT THE STORIES THAT STAY WITH YOU.</span></footer>
-    <dialog id="delete-confirm" class="confirm-dialog" aria-labelledby="delete-dialog-title" aria-describedby="delete-dialog-message">
-        <div class="confirm-dialog-mark" aria-hidden="true">×</div>
-        <p class="section-kicker">REMOVE FROM YOUR SHELF</p>
-        <h2 id="delete-dialog-title">Remove this book?</h2>
-        <p id="delete-dialog-message">This will remove <strong id="delete-book-title"></strong> from your library.</p>
-        <div class="confirm-dialog-actions">
-            <button id="cancel-delete" class="dialog-button dialog-cancel" type="button">Keep book</button>
-            <button id="confirm-delete" class="dialog-button dialog-remove" type="button">Remove book</button>
-        </div>
-    </dialog>
-    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
-</body>
-</html>
+<footer class="site-footer"><a class="brand footer-brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a><span>COLLECT THE STORIES THAT STAY WITH YOU.</span></footer>
+
+<dialog id="delete-confirm" class="confirm-dialog" aria-labelledby="delete-dialog-title" aria-describedby="delete-dialog-message">
+    <div class="confirm-dialog-mark" aria-hidden="true">×</div>
+    <p class="section-kicker">REMOVE FROM YOUR SHELF</p>
+    <h2 id="delete-dialog-title">Remove this book?</h2>
+    <p id="delete-dialog-message">This will remove <strong id="delete-book-title"></strong> from your library.</p>
+    <div class="confirm-dialog-actions">
+        <button id="cancel-delete" class="dialog-button dialog-cancel" type="button">Keep book</button>
+        <button id="confirm-delete" class="dialog-button dialog-remove" type="button">Remove book</button>
+    </div>
+</dialog>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='script.js') }}" defer></script>
+{% endblock %}

@@ -1,15 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>upload</title>
-</head>
-<body>
- <form method="POST" action="/upload" enctype="multipart/form-data">
-            <label>Select a file:</label>
-            <input type="file" name="the_file">
-            <button type="submit">Upload</button>
+{% extends "base.html" %}
+
+{% block title %}Upload a file — Papertrail{% endblock %}
+
+{% block content %}
+<header class="topbar">
+    <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a>
+    <nav class="topnav" aria-label="Main navigation">
+        <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+        <a class="nav-link" href="{{ url_for('books.books') }}">My library</a>
+        <a class="nav-link" href="{{ url_for('authors.authors') }}">Authors</a>
+    </nav>
+</header>
+<main class="edit-shell">
+    <section class="panel edit-panel">
+        <p class="eyebrow"><span class="eyebrow-line"></span> ADD TO YOUR COLLECTION</p>
+        <h1>Upload a <em>file.</em></h1>
+        <form class="book-form" method="POST" action="/upload" enctype="multipart/form-data">
+            <label for="the-file">Choose a file</label>
+            <input id="the-file" type="file" name="the_file" required>
+            <button class="button form-button" type="submit">Upload <span aria-hidden="true">→</span></button>
         </form>
-<p>{{msg}}</p>
-</body>
-</html>
+        {% if msg %}<p class="page-description" role="status">{{ msg }}</p>{% endif %}
+    </section>
+</main>
+{% endblock %}

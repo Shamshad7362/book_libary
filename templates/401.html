@@ -1,11 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Unauthorized</title>
-</head>
-<body>
-<h1>401 Unauthorized</h1>
-<p> Sorry you are not authorized to visit this page.</p>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Unauthorized — Papertrail{% endblock %}
+
+{% block content %}
+<header class="topbar">
+    <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a>
+    <a class="button button-small" href="{{ url_for('home') }}">Back to home</a>
+</header>
+<main class="not-found-shell">
+    <section class="not-found-card">
+        <div class="not-found-copy">
+            <p class="eyebrow"><span class="eyebrow-line"></span> ACCESS RESTRICTED</p>
+            <h1>You can’t enter<br><em>this chapter.</em></h1>
+            <p>You are not authorized to view this page.</p>
+            <div class="not-found-actions"><a class="button" href="{{ url_for('home') }}">Go to home <span aria-hidden="true">→</span></a></div>
+        </div>
+    </section>
+</main>
+{% endblock %}

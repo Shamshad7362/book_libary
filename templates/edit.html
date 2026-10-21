@@ -1,46 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit {{ book.name }} — Papertrail</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <header class="topbar"><a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a><nav class="topnav" aria-label="Main navigation"><a class="nav-link" href="{{ url_for('home') }}">Home</a><a class="nav-link active" href="{{ url_for('books.books') }}">My library</a></nav><a class="button button-small button-quiet" href="{{ url_for('books.books') }}">← Back to library</a></header>
-    <main class="edit-shell">
-        <section class="panel edit-panel">
-            <p class="eyebrow"><span class="eyebrow-line"></span> UPDATE YOUR COLLECTION</p>
-            <h1>Edit <em>book.</em></h1>
-            <p class="page-description">A detail changed? Make this entry just right.</p>
-            <form class="book-form" method="POST">
-                <label for="name">Book title</label><input id="name" type="text" name="name" value="{{ book.name }}" maxlength="100" required>
-                <label for="author-search">Author</label>
-                <input id="author-search" type="search" value="{{ book.author.name }}" placeholder="Search authors by name" autocomplete="off" aria-controls="author-results" aria-expanded="false" required>
-                <input id="author-id" type="hidden" name="author_id" value="{{ book.author.id }}">
-                <div id="author-results" class="author-results" role="listbox" aria-label="Author suggestions" hidden>
-                    {% for author in authors %}
-                    <button class="author-result" type="button" role="option" data-author-id="{{ author.id }}" data-author-name="{{ author.name }}">{{ author.name }} <span>{{ author.country }}</span></button>
-                    {% endfor %}
-                    <p class="author-no-results" hidden>No matching authors found.</p>
-                </div>
-                <button id="show-new-author" class="new-author-toggle" type="button">＋ Add a new author</button>
-                <div id="new-author-fields" hidden>
-                    <label for="author-name">New author's name</label>
-                    <input id="author-name" type="text" name="author_name" placeholder="Who wrote it?" maxlength="100">
-                    <p id="duplicate-author-warning" class="duplicate-author-warning" role="status" hidden></p>
-                    <label for="country">Author's country</label>
-                    <input id="country" type="text" name="country" placeholder="e.g. United Kingdom" maxlength="100">
-                </div>
-                <button class="button form-button" type="submit">Save changes <span aria-hidden="true">→</span></button>
-                <a class="cancel-link" href="{{ url_for('books.books') }}">Cancel and return to my library</a>
-            </form>
-        </section>
-        <div class="edit-decoration"><span class="decoration-star">✳</span><p>“A book is a<br>dream you hold<br>in your hands.”</p><span class="decoration-rule"></span><small>— NEIL GAIMAN</small></div>
-    </main>
-    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Edit {{ book.name }} — Papertrail{% endblock %}
+
+{% block content %}
+<header class="topbar">
+    <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a>
+    <nav class="topnav" aria-label="Main navigation">
+        <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+        <a class="nav-link active" href="{{ url_for('books.books') }}">My library</a>
+        <a class="nav-link" href="{{ url_for('authors.authors') }}">Authors</a>
+    </nav>
+    <a class="button button-small button-quiet" href="{{ url_for('books.books') }}">← Back to library</a>
+</header>
+
+<main class="edit-shell">
+    <section class="panel edit-panel">
+        <p class="eyebrow"><span class="eyebrow-line"></span> UPDATE YOUR COLLECTION</p>
+        <h1>Edit <em>book.</em></h1>
+        <p class="page-description">A detail changed? Make this entry just right.</p>
+        <form class="book-form" method="POST">
+            <label for="name">Book title</label>
+            <input id="name" type="text" name="name" value="{{ book.name }}" maxlength="100" required>
+            <label for="author-search">Author</label>
+            <input id="author-search" type="search" value="{{ book.author.name }}" placeholder="Search authors by name" autocomplete="off" aria-controls="author-results" aria-expanded="false" required>
+            <input id="author-id" type="hidden" name="author_id" value="{{ book.author.id }}">
+            <div id="author-results" class="author-results" role="listbox" aria-label="Author suggestions" hidden>
+                {% for author in authors %}
+                <button class="author-result" type="button" role="option" data-author-id="{{ author.id }}" data-author-name="{{ author.name }}">{{ author.name }} <span>{{ author.country }}</span></button>
+                {% endfor %}
+                <p class="author-no-results" hidden>No matching authors found.</p>
+            </div>
+            <button id="show-new-author" class="new-author-toggle" type="button">＋ Add a new author</button>
+            <div id="new-author-fields" hidden>
+                <label for="author-name">New author's name</label>
+                <input id="author-name" type="text" name="author_name" placeholder="Who wrote it?" maxlength="100">
+                <p id="duplicate-author-warning" class="duplicate-author-warning" role="status" hidden></p>
+                <label for="country">Author's country</label>
+                <input id="country" type="text" name="country" placeholder="e.g. United Kingdom" maxlength="100">
+            </div>
+            <button class="button form-button" type="submit">Save changes <span aria-hidden="true">→</span></button>
+            <a class="cancel-link" href="{{ url_for('books.books') }}">Cancel and return to my library</a>
+        </form>
+    </section>
+    <div class="edit-decoration"><span class="decoration-star">✳</span><p>“A book is a<br>dream you hold<br>in your hands.”</p><span class="decoration-rule"></span><small>— NEIL GAIMAN</small></div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='script.js') }}" defer></script>
+{% endblock %}

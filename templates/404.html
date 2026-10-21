@@ -1,45 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#fff1c8">
-    <title>Page not found — Papertrail</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body class="not-found-page">
-    <header class="topbar">
-        <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a>
-        <nav class="topnav" aria-label="Main navigation">
-            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
-            <a class="nav-link" href="{{ url_for('books.books') }}">My library</a>
-        </nav>
-        <a class="button button-small" href="{{ url_for('books.books') }}">Go to library <span aria-hidden="true">↗</span></a>
-    </header>
+{% extends "base.html" %}
 
-    <main class="not-found-shell">
-        <section class="not-found-card">
-            <div class="not-found-art" aria-hidden="true">
-                <span class="not-found-sun"></span>
-                <span class="not-found-number">404</span>
-                <div class="lost-book"><span class="lost-book-mark">?</span></div>
-                <span class="not-found-star star-left">✳</span>
-                <span class="not-found-star star-right">✦</span>
+{% block title %}Page not found — Papertrail{% endblock %}
+{% block body_class %}not-found-page{% endblock %}
+
+{% block content %}
+<header class="topbar">
+    <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a>
+    <nav class="topnav" aria-label="Main navigation">
+        <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+        <a class="nav-link" href="{{ url_for('books.books') }}">My library</a>
+        <a class="nav-link" href="{{ url_for('authors.authors') }}">Authors</a>
+    </nav>
+    <a class="button button-small" href="{{ url_for('books.books') }}">Go to library <span aria-hidden="true">↗</span></a>
+</header>
+
+<main class="not-found-shell">
+    <section class="not-found-card">
+        <div class="not-found-art" aria-hidden="true">
+            <span class="not-found-sun"></span>
+            <span class="not-found-number">404</span>
+            <div class="lost-book"><span class="lost-book-mark">?</span></div>
+            <span class="not-found-star star-left">✳</span>
+            <span class="not-found-star star-right">✦</span>
+        </div>
+        <div class="not-found-copy">
+            <p class="eyebrow"><span class="eyebrow-line"></span> WRONG TURN, GOOD STORY</p>
+            <h1>This page is<br><em>off the shelf.</em></h1>
+            <p>We couldn’t find that page or book. It may have moved, or the address may be incorrect.</p>
+            <div class="not-found-actions">
+                <a class="button" href="{{ url_for('books.books') }}">Back to my library <span aria-hidden="true">→</span></a>
+                <a class="not-found-home" href="{{ url_for('home') }}">Go to home</a>
             </div>
-            <div class="not-found-copy">
-                <p class="eyebrow"><span class="eyebrow-line"></span> WRONG TURN, GOOD STORY</p>
-                <h1>This page is<br><em>off the shelf.</em></h1>
-                <p>We couldn’t find that page or book. It may have moved, or the address may be incorrect.</p>
-                <div class="not-found-actions">
-                    <a class="button" href="{{ url_for('books.books') }}">Back to my library <span aria-hidden="true">→</span></a>
-                    <a class="not-found-home" href="{{ url_for('home') }}">Go to home</a>
-                </div>
-            </div>
-        </section>
-        <p class="not-found-footnote"><span>✳</span> Every good reader gets lost in a story sometimes.</p>
-    </main>
-</body>
-</html>
+        </div>
+    </section>
+    <p class="not-found-footnote"><span>✳</span> Every good reader gets lost in a story sometimes.</p>
+</main>
+{% endblock %}

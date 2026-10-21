@@ -1,52 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#f7f5f0">
-    <title>Papertrail — Your personal library</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <header class="topbar">
-        <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a>
-        <nav class="topnav" aria-label="Main navigation">
-            <a class="nav-link active" href="{{ url_for('home') }}">Home</a>
-            <a class="nav-link" href="{{ url_for('books.books') }}">My library</a>
-        </nav>
-        <a class="button button-small" href="{{ url_for('books.books') }}">Open library <span aria-hidden="true">↗</span></a>
-    </header>
+{% extends "base.html" %}
 
-    <main class="hero-shell">
-        <section class="hero-copy">
-            <p class="eyebrow"><span class="eyebrow-line"></span> A little space for your next great read</p>
-            <h1>Books make<br>room for <em>more.</em></h1>
-            <p class="hero-description">Keep the stories you love close. Build a personal library, remember the people behind the pages, and make your reading list feel like yours.</p>
-            <div class="hero-actions">
-                <a class="button" href="{{ url_for('books.books') }}">Explore my library <span aria-hidden="true">→</span></a>
-                <span class="quiet-note"><span class="note-dot"></span> Your collection, all in one place</span>
-            </div>
-            <div class="hero-footnote"><span>01</span><span class="footnote-rule"></span><span>READ · REMEMBER · REPEAT</span></div>
-        </section>
+{% block title %}Papertrail — A home for your stories{% endblock %}
 
-        <section class="book-art" aria-label="Illustration of a stack of books">
-            <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
-            <div class="sun-disc"></div>
-            <div class="floating-label label-top">A world between covers <span>✳</span></div>
-            <div class="book-stack">
-                <div class="book book-back"><span class="book-spine">THE ART OF NOTICING</span><span class="spine-mark">✳</span></div>
-                <div class="book book-middle"><span class="book-spine">GARDEN OF SMALL THINGS</span><span class="spine-mark">✺</span></div>
-                <div class="book book-front"><div class="cover-sun"></div><span class="cover-kicker">A COLLECTION OF</span><span class="cover-title">quiet<br>moments</span><span class="cover-author">M. ELLIS</span></div>
-                <div class="book book-bottom"><span class="book-spine">SOMEWHERE, SLOWLY</span><span class="spine-mark">✴</span></div>
-            </div>
-            <div class="floating-label label-bottom"><span class="label-star">✳</span> Made for curious minds</div>
-            <span class="art-spark spark-one">✳</span><span class="art-spark spark-two">✦</span><span class="art-spark spark-three">·</span>
-        </section>
-    </main>
+{% block content %}
+<header class="topbar">
+    <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a>
+    <nav class="topnav" aria-label="Main navigation">
+        <a class="nav-link active" href="{{ url_for('home') }}">Home</a>
+        <a class="nav-link" href="{{ url_for('books.books') }}">My library</a>
+        <a class="nav-link" href="{{ url_for('authors.authors') }}">Authors</a>
+    </nav>
+    <a class="button button-small" href="{{ url_for('books.books') }}">Open library <span aria-hidden="true">↗</span></a>
+</header>
 
-    <footer class="landing-footer"><span>START WITH A STORY</span><span class="footer-rule"></span><span>SCROLL LESS. READ MORE.</span></footer>
-</body>
-</html>
+<main class="hero-shell">
+    <section class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-line"></span> A little space for your next great read</p>
+        <h1>Books make<br>room for <em>more.</em></h1>
+        <p class="hero-description">Keep the stories you love close. Build a personal library, remember the people behind the pages, and make your reading list feel like yours.</p>
+        <div class="hero-actions">
+            <a class="button" href="{{ url_for('books.books') }}">Explore my library <span aria-hidden="true">→</span></a>
+            <span class="quiet-note"><span class="note-dot"></span> Your collection, all in one place</span>
+        </div>
+        <div class="hero-footnote"><span>01</span><span class="footnote-rule"></span><span>READ · REMEMBER · REPEAT</span></div>
+    </section>
+
+    <section class="book-art" aria-label="Illustration of a stack of books">
+        <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+        <div class="sun-disc"></div>
+        <div class="floating-label label-top">A world between covers <span>✳</span></div>
+        <div class="book-stack">
+            <div class="book book-back"><span class="book-spine">THE ART OF NOTICING</span><span class="spine-mark">✳</span></div>
+            <div class="book book-middle"><span class="book-spine">GARDEN OF SMALL THINGS</span><span class="spine-mark">✺</span></div>
+            <div class="book book-front"><div class="cover-sun"></div><span class="cover-kicker">A COLLECTION OF</span><span class="cover-title">quiet<br>moments</span><span class="cover-author">M. ELLIS</span></div>
+            <div class="book book-bottom"><span class="book-spine">SOMEWHERE, SLOWLY</span><span class="spine-mark">✴</span></div>
+        </div>
+        <div class="floating-label label-bottom"><span class="label-star">✳</span> Made for curious minds</div>
+        <span class="art-spark spark-one">✳</span><span class="art-spark spark-two">✦</span><span class="art-spark spark-three">·</span>
+    </section>
+</main>
+
+<footer class="landing-footer"><span>START WITH A STORY</span><span class="footer-rule"></span><span>SCROLL LESS. READ MORE.</span></footer>
+{% endblock %}

@@ -3,16 +3,6 @@
 {% block title %}My library — Papertrail{% endblock %}
 
 {% block content %}
-<header class="topbar">
-    <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a>
-    <nav class="topnav" aria-label="Main navigation">
-        <a class="nav-link" href="{{ url_for('home') }}">Home</a>
-        <a class="nav-link active" href="{{ url_for('books.books') }}">My library</a>
-        <a class="nav-link" href="{{ url_for('authors.authors') }}">Authors</a>
-    </nav>
-    <span class="topbar-note">A HOME FOR YOUR STORIES</span>
-</header>
-
 <main class="library-shell">
     <section class="page-heading">
         <div>

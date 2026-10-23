@@ -4,11 +4,6 @@
 {% block body_class %}login-page{% endblock %}
 
 {% block content %}
-<header class="topbar login-topbar">
-    <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a>
-    <a class="login-back-link" href="{{ url_for('home') }}">← Back to home</a>
-</header>
-
 <main class="login-layout">
     <section class="login-welcome" aria-label="Welcome to Papertrail">
         <span class="login-decoration decoration-circle-one"></span>
@@ -28,15 +23,15 @@
             <h2>Sign in</h2>
             <p>Pick up right where your next chapter begins.</p>
         </div>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            <ul class="login-flashes" aria-live="polite">
-                {% for category, message in messages %}
-                <li class="login-flash {{ category }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        {% endwith %}
+<!--        {% with messages = get_flashed_messages(with_categories=true) %}-->
+<!--            {% if messages %}-->
+<!--            <ul class="login-flashes" aria-live="polite">-->
+<!--                {% for category, message in messages %}-->
+<!--                <li class="login-flash {{ category }}">{{ message }}</li>-->
+<!--                {% endfor %}-->
+<!--            </ul>-->
+<!--            {% endif %}-->
+<!--        {% endwith %}-->
         <form class="login-form" method="POST" action="/login">
             <label for="username">Username</label>
             <input id="username" type="text" name="username" placeholder="Enter your username" autocomplete="username" required>
@@ -44,9 +39,9 @@
             <input id="password" type="password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
             <button class="button login-submit" type="submit">Sign in <span aria-hidden="true">→</span></button>
         </form>
+        <p class="login-footnote">New to Papertrail? <a href="/register">Create an account</a></p>
         <p class="login-footnote"><span>✳</span> Your bookshelf is waiting for you.</p>
     </section>
 </main>
 
-<footer class="login-footer"><span>papertrail</span><span>MADE FOR THE STORIES THAT STAY.</span></footer>
 {% endblock %}

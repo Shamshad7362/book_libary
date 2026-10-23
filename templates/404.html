@@ -4,16 +4,6 @@
 {% block body_class %}not-found-page{% endblock %}
 
 {% block content %}
-<header class="topbar">
-    <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a>
-    <nav class="topnav" aria-label="Main navigation">
-        <a class="nav-link" href="{{ url_for('home') }}">Home</a>
-        <a class="nav-link" href="{{ url_for('books.books') }}">My library</a>
-        <a class="nav-link" href="{{ url_for('authors.authors') }}">Authors</a>
-    </nav>
-    <a class="button button-small" href="{{ url_for('books.books') }}">Go to library <span aria-hidden="true">↗</span></a>
-</header>
-
 <main class="not-found-shell">
     <section class="not-found-card">
         <div class="not-found-art" aria-hidden="true">

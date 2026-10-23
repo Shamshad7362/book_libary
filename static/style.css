@@ -34,6 +34,7 @@ a {
 }
 
 .topbar {
+    position: relative;
     height: 82px;
     max-width: 1240px;
     margin: auto;
@@ -72,6 +73,25 @@ a {
     display: flex;
     align-items: center;
     gap: 34px;
+}
+
+.topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logout-form {
+    margin: 0;
+}
+
+.topbar-username {
+    max-width: 130px;
+    overflow: hidden;
+    color: var(--muted);
+    font-size: 11px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .nav-link {
@@ -1400,6 +1420,15 @@ h1,h2,h3,p {
         font-size: 10px;
     }
 
+    .topbar-actions {
+        margin-left: auto;
+        gap: 5px;
+    }
+
+    .topbar-username {
+        display: none;
+    }
+
     .topbar-note {
         display: none;
     }
@@ -2096,4 +2125,19 @@ h1,h2,h3,p {
 .flash.success {
     background: #d6ffd6;
     color: #060;
+}
+
+body.login-page .topbar .flash-messages {
+    position: absolute;
+    z-index: 2;
+    top: calc(100% + 8px);
+    left: 50%;
+    width: 100vw;
+    max-width: none;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+body.login-page .topbar .flash {
+    margin: 0;
 }

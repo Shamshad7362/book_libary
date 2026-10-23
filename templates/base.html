@@ -12,8 +12,43 @@
     {% block head %}{% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
+    <header class="topbar">
+        <a class="brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a>
+        <nav class="topnav" aria-label="Main navigation">
+            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+            <a class="nav-link" href="{{ url_for('books.books') }}">My library</a>
+            <a class="nav-link" href="{{ url_for('authors.authors') }}">Authors</a>
+        </nav>
+        <div class="topbar-actions">
+            {% if session.get('logged_in') %}
+            <span class="topbar-username">Hi, {{ session.get('username', 'reader') }}</span>
+            <form class="logout-form" method="POST" action="{{ url_for('logout') }}">
+                <button class="button button-small button-quiet" type="submit">Log out</button>
+            </form>
+            {% else %}
+            <a class="button button-small button-quiet" href="{{ url_for('login') }}">Log in</a>
+            <a class="button button-small" href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="flash-messages flash">
+              {% for category, message in messages %}
+                {% if category != 'confirm_error' %}
+                  <p class="flash {{ category }}">{{ message }}</p>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        </div>
+    </header>
     {% block content %}{% endblock %}
     {% block scripts %}{% endblock %}
+    <footer class="site-footer">
+        <a class="brand footer-brand" href="{{ url_for('home') }}"><span class="brand-mark">P</span> papertrail</a>
+        <span>COLLECT THE STORIES THAT STAY WITH YOU.</span>
+    </footer>
 </body>
-<footer class="landing-footer"><span>START WITH A STORY</span><span class="footer-rule"></span><span>SCROLL LESS. READ MORE.</span></footer>
 </html>

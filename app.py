@@ -6,6 +6,7 @@ from routes.book import books_bp
 from routes.authors import authors_bp
 from werkzeug.security import check_password_hash, generate_password_hash
 from urllib.parse import urlsplit
+
 app = Flask(__name__)
 
 app.secret_key = "your_super_secret_key_here"
@@ -42,6 +43,7 @@ def login():
         session["logged_in"] = True
         session["user_id"] = user.id
         session["username"] = user.username
+        session["role"] =  user.role
         if is_safe_redirect_target(next_page):
             return redirect(next_page)
         return redirect(url_for("home"))

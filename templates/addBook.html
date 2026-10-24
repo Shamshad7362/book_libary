@@ -67,12 +67,16 @@
                 <article class="book-row">
                     <div class="mini-cover cover-{{ loop.index0 % 4 }}" aria-hidden="true"><span>{{ book.name[:1]|upper }}</span></div>
                     <div class="book-details"><h3>{{ book.name }}</h3><p>by {{ book.author.name }}</p><span class="country-tag">{{ book.author.country }}</span></div>
-                    <div class="book-actions">
-                        <a class="icon-action edit-action" href="{{ url_for('books.edit_book', book_id=book.id) }}" aria-label="Edit {{ book.name }}" title="Edit book">✎</a>
-                        <form class="delete-form" method="POST" action="{{ url_for('books.delete_book', book_id=book.id) }}" data-book-title="{{ book.name }}">
-                            <button class="icon-action delete-action" type="submit" aria-label="Delete {{ book.name }}" title="Delete book">×</button>
-                        </form>
-                    </div>
+
+<!--                    hide authorization action from normal users-->
+                    {% if session.get("role")=="admin" %}
+                        <div class="book-actions">
+                            <a class="icon-action edit-action" href="{{ url_for('books.edit_book', book_id=book.id) }}" aria-label="Edit {{ book.name }}" title="Edit book">✎</a>
+                            <form class="delete-form" method="POST" action="{{ url_for('books.delete_book', book_id=book.id) }}" data-book-title="{{ book.name }}">
+                                <button class="icon-action delete-action" type="submit" aria-label="Delete {{ book.name }}" title="Delete book">×</button>
+                            </form>
+                        </div>
+                    {% endif %}
                 </article>
                 {% endfor %}
             </div>

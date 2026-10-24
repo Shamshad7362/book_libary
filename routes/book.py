@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from sqlalchemy import select, func
 from sqlalchemy.orm import Session
 
-from decorators import login_required
+from decorators import login_required,admin_required
 from models import Author, Book, engine
 
 
@@ -81,7 +81,7 @@ def find_author_by_name(session, author_name):
     )
 
 @books_bp.route("/<int:book_id>/edit",methods=["GET","POST"])
-@login_required
+@admin_required
 def edit_book(book_id):
     with Session(engine) as session:
         book = session.get(Book, book_id)
@@ -120,7 +120,7 @@ def edit_book(book_id):
 
 
 @books_bp.route("/<int:book_id>/delete",methods=["POST"])
-@login_required
+@admin_required
 def delete_book(book_id):
     with Session(engine) as session:
         book = session.get(Book, book_id)

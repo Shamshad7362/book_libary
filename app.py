@@ -1,11 +1,11 @@
 from flask import Flask, flash, redirect, render_template, request, session, url_for
 from sqlalchemy import select
-from models import Author, Book, Users, engine,Users
+from models import Users, engine
 from sqlalchemy.orm import Session
 from routes.book import books_bp
 from routes.authors import authors_bp
 from werkzeug.security import check_password_hash, generate_password_hash
-from functools import wraps
+from urllib.parse import urlsplit
 app = Flask(__name__)
 
 app.secret_key = "your_super_secret_key_here"
@@ -25,22 +25,35 @@ def home():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    next_page = request.args.get("next") if request.method == "GET" else request.form.get("next")
     if request.method == "GET":
-        return render_template("login.html")
+        return render_template("login.html", next=next_page)
 
     username = request.form.get("username", "").strip()
     password = request.form.get("password", "")
     with Session(engine) as db_session:
+
         user = db_session.scalar(select(Users).where(Users.username == username))
         if user is None or not check_password_hash(user.password_hash, password):
             flash("The username or password is incorrect.", "error")
-            return redirect(url_for("login"))
+            return redirect(url_for("login", next=next_page) if next_page else url_for("login"))
 
         session.clear()
         session["logged_in"] = True
         session["user_id"] = user.id
         session["username"] = user.username
-    return redirect(url_for("books.books"))
+        if is_safe_redirect_target(next_page):
+            return redirect(next_page)
+        return redirect(url_for("home"))
+
+
+def is_safe_redirect_target(target):
+    if not target or "\\" in target:
+        return False
+    parsed = urlsplit(target)
+    if parsed.scheme or parsed.netloc:
+        return parsed.scheme in {"http", "https"} and parsed.netloc == request.host
+    return parsed.path.startswith("/") and not parsed.path.startswith("//")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():

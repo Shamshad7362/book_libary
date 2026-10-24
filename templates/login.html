@@ -32,7 +32,8 @@
 <!--            </ul>-->
 <!--            {% endif %}-->
 <!--        {% endwith %}-->
-        <form class="login-form" method="POST" action="/login">
+        <form class="login-form" method="POST" action="/login" >
+            <input type="hidden" name="next" value="{{ next }}">
             <label for="username">Username</label>
             <input id="username" type="text" name="username" placeholder="Enter your username" autocomplete="username" required>
             <label for="password">Password</label>
